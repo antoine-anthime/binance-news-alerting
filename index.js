@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 const {Schema} = mongoose
 import dotenv from 'dotenv'
 
-dotenv.config()
+dotenv.config({ path: '/home/bitnami/binance-web-scraper/binance-news-alerting/.env' })
 
 const addToDb = async (data) => {
   mongoose.connect(process.env.DB_LINK)
