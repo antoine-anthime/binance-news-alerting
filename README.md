@@ -20,14 +20,18 @@ npm install
 ## Usage
 
 ```sh
-node index.js gets the latest news and upload it to your MongoDB Database ; node sendNotifications.js sends email notification to subscribers
+node index.js 
 ```
-
-## Run tests
+gets the latest news and upload it to your MongoDB Database ; node sendNotifications.js sends email notification to subscribers
 
 ```sh
-npm run test
+node sendNotifications.js
 ```
+Sends Email notifications to subscribers
+
+Update the .env.exemple in the repo, with your MongoDB Database, and setup a sender email
+
+For using locally, set the dotenv.config() as your .env path
 
 ## Author
 
@@ -35,7 +39,7 @@ npm run test
 
 * Twitter: [@AntoineNayuru](https://twitter.com/AntoineNayuru)
 * Github: [@antoine-anthime](https://github.com/antoine-anthime)
-* LinkedIn: [@Antoine ANTHIME](https://linkedin.com/in/Antoine ANTHIME)
+* LinkedIn: [@Antoine ANTHIME](https://linkedin.com/in/antoine-anthime-80b8a71b9)
 
 ## Show your support
 
