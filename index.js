@@ -45,7 +45,7 @@ const loadHtmlAndSearch = async (html) => {
 }
 
 const webscrap = async () => {
-  let res = await axios.get('https://www.binance.com/fr/support/announcement/c-48')
+  let res = await axios.get('https://www.binance.com/en/support/announcement/c-48')
   return res.data
 }
 
