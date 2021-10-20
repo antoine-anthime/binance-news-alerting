@@ -63,11 +63,12 @@ const getNews = async () => {
   {timestamps:  { createdAt: 'created_at' }})
   const News = mongoose.model('News', newsSchema)
 
-  let news = await News.find()
-  if (news[0].pushed === false)
+  let news = await News.findOne({}, {}, { sort: { 'created_at' : -1 } })
+  console.log("news got : ", news)
+  if (news.pushed === false)
   {
-    sendNotifs(news[0])
-    let updated = await News.findOneAndUpdate({title: news[0].title}, {pushed: true})
+    sendNotifs(news)
+    let updated = await News.findOneAndUpdate({title: news.title}, {pushed: true})
   } else {
     console.log('No new notifications to send')
   }
