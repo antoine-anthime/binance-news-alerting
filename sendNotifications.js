@@ -1,6 +1,9 @@
 import mongoose from 'mongoose'
 const {Schema} = mongoose
 import nodemailer from 'nodemailer'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const getNotified = async () => {
   let mailingList = []
@@ -24,13 +27,11 @@ const getNotified = async () => {
 
 const sendNotifs = async (content) => {
   const mailingList = await getNotified()
-
-  console.log("Sending notifications...")
   var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'binance.alerting.news@gmail.com',
-      pass: 'Anthime2012!'
+      user: process.env.MAIL_SENDER,
+      pass: process.env.MAIL_PASSWORD
     }
   });
 
@@ -38,7 +39,7 @@ const sendNotifs = async (content) => {
     from: 'binance.alerting.news@gmail.com',
     to: mailingList,
     subject: `[Binance news] ${content.title.substring(0,25)}...`,
-    text: `${content.title} : Learn more at ${content.link}`
+    text: `${content.title} : Learn more : ${content.link}`
   };
 
   transporter.sendMail(mailOptions, function(error, info){
@@ -52,8 +53,7 @@ const sendNotifs = async (content) => {
 
 const getNews = async () => {
 
-  console.log("Fetching new announcements...")
-  mongoose.connect('mongodb+srv://binance-scrap:cbE87FiXRJBPsCoA@home-cluster.odj0l.mongodb.net/binance-news-scrapper?retryWrites=true&w=majority')
+  mongoose.connect(process.env.DB_LINK)
 
   let newsSchema = new Schema({
     title: String,
@@ -64,24 +64,21 @@ const getNews = async () => {
   const News = mongoose.model('News', newsSchema)
 
   let news = await News.find()
-  console.log(news[0])
   if (news[0].pushed === false)
   {
-    console.log("New announcement not pushed to subscribers -> ", news[0])
     sendNotifs(news[0])
-    //let updated = await News.findOneAndUpdate({title: news[0].title}, {pushed: true})
-    //console.log(updated)
-  }
-  else
-  {
-    console.log("Latest announcement is already pushed.")
+    let updated = await News.findOneAndUpdate({title: news[0].title}, {pushed: true})
+  } else {
+    console.log('No new notifications to send')
   }
 
 
 }
 
 const main = async () => {
+  console.log("Launching sendNotifications")
   let res = await getNews()
+  setTimeout(() => { process.exit() }, 20000);
 }
 
 main()

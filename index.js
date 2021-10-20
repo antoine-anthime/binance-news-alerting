@@ -2,9 +2,12 @@ import axios from 'axios'
 import cheerio from 'cheerio'
 import mongoose from 'mongoose'
 const {Schema} = mongoose
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const addToDb = async (data) => {
-  mongoose.connect('mongodb+srv://binance-scrap:cbE87FiXRJBPsCoA@home-cluster.odj0l.mongodb.net/binance-news-scrapper?retryWrites=true&w=majority')
+  mongoose.connect(process.env.DB_LINK)
 
   let newsSchema = new Schema({
     title: String,
@@ -47,11 +50,10 @@ const webscrap = async () => {
 }
 
 const main = async () => {
-  console.log('Main launched...')
   let res = await webscrap()
   let data = await loadHtmlAndSearch(res)
-  console.log("data loaded: ", data)
   let loaded = await addToDb(data)
+  setTimeout(() => {   process.exit()  }, 20000);
 }
 
 main()
