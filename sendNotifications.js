@@ -3,7 +3,7 @@ const {Schema} = mongoose
 import nodemailer from 'nodemailer'
 import dotenv from 'dotenv'
 
-dotenv.config()
+dotenv.config({ path: '/home/bitnami/binance-web-scraper/binance-news-alerting/.env' })
 
 const getNotified = async () => {
   let mailingList = []
